@@ -7,10 +7,8 @@ const CacheStore = require("../../lib/cache-store");
 describe("CacheStore", function () {
   it("should cache entry", function () {
     const cacheStore = new CacheStore({
-      cacheExpireTime: 200,
-      MAX_CACHE_SIZE: 1024,
-      minFreeCacheSize: 200,
-      maxFreeCacheSize: 400
+      maxAge: 200,
+      max: 1024
     });
     expect(cacheStore.getEntry("test", "1")).to.equal(undefined);
     cacheStore.newEntry("test", "1", {html: "hello"});
@@ -21,10 +19,8 @@ describe("CacheStore", function () {
 
   it("should free up cache", function (done) {
     const cacheStore = new CacheStore({
-      cacheExpireTime: 100,
-      MAX_CACHE_SIZE: 85,
-      minFreeCacheSize: 20,
-      maxFreeCacheSize: 40
+      maxAge: 100,
+      max: 79
     });
     cacheStore.newEntry("test", "1", {html: "hello1"});
     cacheStore.newEntry("test", "2", {html: "hello2"});
@@ -36,10 +32,23 @@ describe("CacheStore", function () {
     setTimeout(() => {
       cacheStore.getEntry("test", "5");
       cacheStore.newEntry("foobar", "1", {html: "blahblahblahblahblah"});
-      expect(Object.keys(cacheStore.cache)).includes("test-4", "test-6", "test-5", "foobar-1");
+      expect(cacheStore.cache.keys()).includes("test-4", "test-6", "test-5", "foobar-1");
       cacheStore.newEntry("foobar", "2", {html: "blahblahblahblahblah"});
-      expect(Object.keys(cacheStore.cache)).to.deep.equal(["test-5", "foobar-1", "foobar-2"]);
+      expect(cacheStore.cache.keys()).to.deep.equal(["foobar-2", "foobar-1", "test-5"]);
       done();
     }, 90);
+  });
+
+  it("should free all cache when expired", function (done) {
+    const cacheStore = new CacheStore({
+      maxAge: 10
+    });
+    cacheStore.newEntry("test", "1", {html: "hello1"});
+    cacheStore.newEntry("test", "2", {html: "hello2"});
+    setTimeout(() => {
+      expect(cacheStore.getEntry("test", "1")).to.equal(undefined);
+      expect(cacheStore.getEntry("test", "2")).to.equal(undefined);
+      done();
+    }, 100);
   });
 });

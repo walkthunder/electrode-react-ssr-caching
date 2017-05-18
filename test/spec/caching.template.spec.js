@@ -70,7 +70,7 @@ describe("SSRCaching template caching", function () {
     // first just render Hello by itself to create a cache with diff react-id's
 
     renderHello("test", message); // eslint-disable-line
-    const key1 = Object.keys(SSRCaching.cacheStore.cache)[0];
+    const key1 = SSRCaching.cacheStore.cache.keys()[0];
     const keyTmpl = key1.substr(6);
     const entry1 = SSRCaching.cacheStore.getEntry("Hello", keyTmpl);
     expect(entry1.hits).to.equal(1);
@@ -106,7 +106,7 @@ describe("SSRCaching template caching", function () {
     Object.keys(hitReport).forEach((key) => {
       console.log(`Cache Entry ${key} Hits ${hitReport[key].hits}`); // eslint-disable-line
     });
-
+    console.log("debug info: SSRCaching.cacheEntrie: ", SSRCaching.cacheEntries());
     expect(SSRCaching.cacheEntries()).to.equal(2);
     expect(SSRCaching.cacheSize()).to.be.above(0);
   });
