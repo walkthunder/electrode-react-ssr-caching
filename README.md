@@ -243,12 +243,13 @@ Get total number of cache entries
 
 Returns an object with information about cache entry hits
 
-Built with :heart: by [Team Electrode](https://github.com/orgs/electrode-io/people) @WalmartLabs.
+Built with :heart: by [walkthunder].
+Forked from [electrode-react-ssr-caching](https://github.com/electrode-io/electrode-react-ssr-caching)
 
 [Sasha Aickin's talk]: https://www.youtube.com/watch?v=PnpfGy7q96U
 [farmhash]: https://github.com/google/farmhash
-[npm-image]: https://badge.fury.io/js/electrode-react-ssr-caching.svg
-[npm-url]: https://npmjs.org/package/electrode-react-ssr-caching
+[npm-image]: https://d25lcipzij17d.cloudfront.net/badge.svg?id=js&type=6&v=0.2.0&x2=0
+[npm-url]: https://npmjs.org/package/react-ssr-caching
 [travis-image]: https://travis-ci.org/electrode-io/electrode-react-ssr-caching.svg?branch=master
 [travis-url]: https://travis-ci.org/electrode-io/electrode-react-ssr-caching
 [daviddm-image]: https://david-dm.org/electrode-io/electrode-react-ssr-caching.svg?theme=shields.io

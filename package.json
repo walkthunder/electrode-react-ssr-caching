@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:electrode-io/electrode-react-ssr-caching.git"
+    "url": "git@github.com:walkthunder/electrode-react-ssr-lru-caching.git"
   },
   "keywords": ["SSR", "Caching", "LRU"],
   "author": "Walkthunder<thunder4aaron@gmail.com>",
