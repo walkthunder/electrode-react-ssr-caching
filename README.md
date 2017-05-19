@@ -1,11 +1,11 @@
-# electrode-react-ssr-caching [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
+# react-ssr-caching [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
 
 Support profiling React Server Side Rendering time and component caching to help you speed up SSR.
 
 # Installing
 
 ```
-npm i electrode-react-ssr-caching
+npm i react-ssr-caching
 ```
 
 # Why and When we use it
@@ -32,7 +32,7 @@ Note that since this module patches React's source code to inject the caching lo
 For example:
 
 ```js
-import SSRCaching from "electrode-react-ssr-caching";
+import SSRCaching from "react-ssr-caching";
 import React from 'react';
 import ReactDOM from 'react-dom/server';
 ```
@@ -43,7 +43,7 @@ import ReactDOM from 'react-dom/server';
 You can use this module to inspect the time each component took to render.
 
 ```js
-import SSRCaching from "electrode-react-ssr-caching";
+import SSRCaching from "react-ssr-caching";
 import { renderToString } from "react-dom/server";
 import MyComponent from "mycomponent";
 
@@ -97,7 +97,7 @@ Lru caching config would be suppported next version.
 The basic steps to enabling caching are:
 
 ```js
-import SSRCaching from "electrode-react-ssr-caching";
+import SSRCaching from "react-ssr-caching";
 
 SSRCaching.enableCaching();
 SSRCaching.setCachingConfig(cacheConfig);
