@@ -1,6 +1,13 @@
 # react-ssr-caching [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
 
 Support profiling React Server Side Rendering time and component caching to help you speed up SSR.
+This project is originally forked from `electrode-react-ssr-caching`.
+
+# What's new?
+
+This lib [`react-ssr-caching`](https://www.npmjs.com/package/react-ssr-caching) support configurable lru cache with `lru-cache` lib. You could config data expire time, max data length, etc. Config parameters could check [here](https://www.npmjs.com/package/react-ssr-caching).
+
+And you could config your own cache implementations such as redis cache in the next version which would come soon. It's the purpose of this fork.
 
 # Installing
 
@@ -320,6 +327,17 @@ Get total number of cache entries
 ### [`cacheHitReport()`](#cachehitreport)
 
 Returns an object with information about cache entry hits
+
+# Related works
+
+1. [electrode-react-ssr-caching](https://github.com/electrode-io/electrode-react-ssr-caching)
+2. [react-ssr-optimization](https://www.npmjs.com/package/react-ssr-optimization)
+3. [react-server](https://github.com/redfin/react-server)
+4. [react-dom-stream](https://github.com/aickin/react-dom-stream)
+5. [hypernova](https://github.com/airbnb/hypernova)
+6. [Rapscallion](https://github.com/FormidableLabs/rapscallion)
+
+
 
 Built with :heart: by walkthunder.
 Forked from [electrode-react-ssr-caching](https://github.com/electrode-io/electrode-react-ssr-caching)
