@@ -73,6 +73,41 @@ describe("SSRCaching simple caching", function () {
   });
 
   //
+  // test cache store config
+  //
+  it("should clean up all cache when expired", function () {
+    const message = "how're you again?";
+
+    SSRCaching.enableCaching();
+    SSRCaching.setCachingConfig({
+      components: {
+        "Hello": {
+          strategy: "simple",
+          enable: true,
+          genCacheKey: () => "key-simple"
+        }
+      },
+      lruCacheConfig: {
+        max: 50 * 1024 * 1024, // 50M
+        length: function (n, key) {
+          const len = key && key.length || 0;
+          if (n && n.html) {
+            return n.html.length + len;
+          }
+          return len;
+        },
+        maxAge: 1000 * 15
+      }
+    });
+    SSRCaching.shouldHashKeys(false);
+    renderGreeting("test", message);
+    expect(SSRCaching.cacheStore.getEntry("Hello", "key-simple").hits).to.equal(1);
+    setTimeout(function () {
+      expect(SSRCaching.cacheStore.getEntry("Hello", "key-simple").hits).to.equal(0);
+    }, 2000);
+  });
+
+  //
   // test simple strategy with JSON.stringify on props to generate cache key
   //
   it("should cache component with simple strategy and stringify", function () {
