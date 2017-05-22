@@ -346,7 +346,7 @@ Forked from [electrode-react-ssr-caching](https://github.com/electrode-io/electr
 [farmhash]: https://github.com/google/farmhash
 [npm-image]: https://badge.fury.io/js/react-ssr-caching.svg
 [npm-url]: https://npmjs.org/package/react-ssr-caching
-[travis-image]: https://travis-ci.org/walkthunder/electrode-react-ssr-lru-caching.svg?branch=master
-[travis-url]: https://travis-ci.org/walkthunder/electrode-react-ssr-lru-caching
+[travis-image]: https://travis-ci.org/walkthunder/react-ssr-caching.svg?branch=master
+[travis-url]: https://travis-ci.org/walkthunder/react-ssr-caching
 [daviddm-image]: https://david-dm.org/walkthunder/electrode-react-ssr-lru-caching.svg
 [daviddm-url]: https://david-dm.org/walkthunder/electrode-react-ssr-lru-caching
