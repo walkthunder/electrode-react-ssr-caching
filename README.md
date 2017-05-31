@@ -5,9 +5,14 @@ This project is originally forked from `electrode-react-ssr-caching`.
 
 # What's new?
 
-This lib [`react-ssr-caching`](https://www.npmjs.com/package/react-ssr-caching) support configurable lru cache with `lru-cache` lib. You could config data expire time, max data length, etc. Config parameters could check [here](https://www.npmjs.com/package/react-ssr-caching).
+This lib [`react-ssr-caching`](https://www.npmjs.com/package/react-ssr-caching) support
+1. Configurable lru cache with `lru-cache` lib
 
-And you could config your own cache implementations such as redis cache in the next version which would come soon. It's the purpose of this fork.
+    > You could config data expire time, max data length, etc. Config parameters could check [here](https://www.npmjs.com/package/react-ssr-caching).
+
+2. User defined any cache implementations with length(), get() and set() methods, like redis on remote server.  The get() and set() method could be either sync functions or async ones.
+    > Note that in this way, data cache stragety should be assigned on the redis server side.
+
 
 # Installing
 
@@ -76,7 +81,6 @@ const config = {
   enabled: false,
   profiling: false,
   caching: false,
-  debug: false,
   hashKey: true,
   stripUrlProtocol: true
 };
@@ -84,6 +88,7 @@ const config = {
 
 lru cache default config:
 ```js
+  debug: true,
   max: 50 * 1024 * 1024, // 50M
   length: function (n, key) {
     const len = key && key.length || 0;
@@ -275,15 +280,6 @@ Enable cache according to flag
 
    - `undefined` or `true` - enable caching
    - `false` - disable caching
-
-### [`enableCachingDebug(flag)`](#enablecachingdebugflag)
-
-Enable cache debugging according to flag.
-
-> Caching must be enabled for this to have any effect.
-
-   - `undefined` or `true` - enable cache debugging
-   - `false` - disable cache debugging
 
 ### [`setCachingConfig(config)`](#setcachingconfigconfig)
 
