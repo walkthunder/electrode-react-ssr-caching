@@ -1,6 +1,6 @@
 {
   "name": "react-ssr-caching",
-  "version": "0.3.2",
+  "version": "1.0.0",
   "description": "Optimize React SSR with profiling and component caching",
   "main": "lib/ssr-caching.js",
   "scripts": {
