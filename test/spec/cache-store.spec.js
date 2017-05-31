@@ -3,13 +3,6 @@
 // test cache store feature
 
 const CacheStore = require("../../lib/cache-store");
-const Redis = require("ioredis");
-const redisHost = "115.29.5.46";
-const cacheImpl = new Redis(6379, redisHost, {
-  password: "qingting123"
-});
-cacheImpl.length = cacheImpl.dbsize;
-
 
 describe("CacheStore", function () {
   this.timeout(15000);
@@ -59,47 +52,55 @@ describe("CacheStore", function () {
       done();
     }, 100);
   });
+  const redisHost = process.env.REDIS;
+  const port = process.env.REDIS_PORT || 6379;
+  const password = process.env.REDIS_PW;
+  if (redisHost && port && password) {
+    const Redis = require("ioredis");
+    const cacheImpl = new Redis(port, redisHost, { password });
+    cacheImpl.length = cacheImpl.dbsize;
 
-  it("should cache data with redis", function (done) {
-    const cacheStore = new CacheStore({
-      cacheImpl
-    });
-    Promise.resolve()
-    .then(function () {
-      return cacheStore.newEntry("test", "1", {html: "hello1"});
-    })
-    .then(function () {
-      return cacheStore.getEntry("test", "1")
-      .then(function (res) {
-        expect(res.html).to.equal("hello1");
+    it("should cache data with redis", function (done) {
+      const cacheStore = new CacheStore({
+        cacheImpl
+      });
+      Promise.resolve()
+      .then(function () {
+        return cacheStore.newEntry("test", "1", {html: "hello1"});
+      })
+      .then(function () {
+        return cacheStore.getEntry("test", "1")
+        .then(function (res) {
+          expect(res.html).to.equal("hello1");
+          done();
+        });
+      })
+      .catch(function (e) {
+        console.log("error happened: ", e);
         done();
       });
-    })
-    .catch(function (e) {
-      console.log("error happened: ", e);
-      done();
     });
-  });
 
-  it("should cache data with redis in production mode", function (done) {
-    const cacheStore = new CacheStore({
-      cacheImpl,
-      debug: false
-    });
-    Promise.resolve()
-    .then(function () {
-      return cacheStore.newEntry("test", "1", {html: "hello1"});
-    })
-    .then(function () {
-      return cacheStore.getEntry("test", "1")
-      .then(function (res) {
-        expect(res.html).to.equal("hello1");
+    it("should cache data with redis in production mode", function (done) {
+      const cacheStore = new CacheStore({
+        cacheImpl,
+        debug: false
+      });
+      Promise.resolve()
+      .then(function () {
+        return cacheStore.newEntry("test", "1", {html: "hello1"});
+      })
+      .then(function () {
+        return cacheStore.getEntry("test", "1")
+        .then(function (res) {
+          expect(res.html).to.equal("hello1");
+          done();
+        });
+      })
+      .catch(function (e) {
+        console.log("error happened: ", e);
         done();
       });
-    })
-    .catch(function (e) {
-      console.log("error happened: ", e);
-      done();
     });
-  });
+  }
 });
