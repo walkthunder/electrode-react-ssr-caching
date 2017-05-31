@@ -55,7 +55,7 @@ describe("SSRCaching simple caching", function () {
     start = Date.now();
     const r2 = renderGreeting("test", message);
     const r2Time = Date.now() - start;
-    const entry = SSRCaching.cacheStore.getEntry("Hello", "500034349202595839ffe2cb6f83665b");
+    let entry = SSRCaching.cacheStore.getEntry("Hello", "500034349202595839ffe2cb6f83665b");
     expect(entry.hits).to.equal(1);
 
     // now render should use result from cache
@@ -67,8 +67,8 @@ describe("SSRCaching simple caching", function () {
     console.log(`rendering time r1 ${r1Time}ms r2 ${r2Time} r3 (cached) ${r3Time}`);
     expect(r3Time).below(r1Time);
     expect(r3Time).below(r2Time);
-
-    expect(entry.hits).to.equal(2);
+    entry = SSRCaching.cacheStore.getEntry("Hello", "500034349202595839ffe2cb6f83665b");
+    expect(entry.hits).to.equal(3);
     verifyRenderResults(r1, r2, r3);
   });
 
@@ -142,7 +142,7 @@ describe("SSRCaching simple caching", function () {
 
     SSRCaching.shouldHashKeys(true);
     const r2 = renderGreeting("test", message);
-    const entry = SSRCaching.cacheStore.getEntry("Hello", "6a86523415a68c4c7580fe6db324923c");
+    let entry = SSRCaching.cacheStore.getEntry("Hello", "6a86523415a68c4c7580fe6db324923c");
     expect(entry.hits).to.equal(1);
 
     // now render should use result from cache
@@ -150,7 +150,8 @@ describe("SSRCaching simple caching", function () {
     SSRCaching.enableProfiling(true);
     const r3 = renderGreeting("test", message);
     expect(data.Greeting[0].Hello[0].time).to.be.above(0);
-    expect(entry.hits).to.equal(2);
+    entry = SSRCaching.cacheStore.getEntry("Hello", "6a86523415a68c4c7580fe6db324923c");
+    expect(entry.hits).to.equal(3);
     verifyRenderResults(r1, r2, r3);
   });
 });

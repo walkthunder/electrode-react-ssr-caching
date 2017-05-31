@@ -72,14 +72,15 @@ describe("SSRCaching template caching", function () {
     renderHello("test", message); // eslint-disable-line
     const key1 = SSRCaching.cacheStore.cache.keys()[0];
     const keyTmpl = key1.substr(6);
-    const entry1 = SSRCaching.cacheStore.getEntry("Hello", keyTmpl);
+    let entry1 = SSRCaching.cacheStore.getEntry("Hello", keyTmpl);
     expect(entry1.hits).to.equal(1);
 
     // render hello again and verify cache
 
     const rHello2 = renderHello("test", message);
     expect(rHello1).to.equal(rHello2);
-    expect(entry1.hits).to.equal(2);
+    entry1 = SSRCaching.cacheStore.getEntry("Hello", keyTmpl);
+    expect(entry1.hits).to.equal(3);
 
     // render Greeting that has Hello inside and verify
 
@@ -92,13 +93,14 @@ describe("SSRCaching template caching", function () {
     SSRCaching.shouldHashKeys(true);
     const hashKey = SSRCaching.hashKeyFn(keyTmpl);
     const r2 = renderGreeting("test", message);
-    const entry = SSRCaching.cacheStore.getEntry("Hello", hashKey);
+    let entry = SSRCaching.cacheStore.getEntry("Hello", hashKey);
     expect(entry.hits).to.equal(1);
 
     // now render should use result from cache
 
     const r3 = renderGreeting("test", message);
-    expect(entry.hits).to.equal(2);
+    entry = SSRCaching.cacheStore.getEntry("Hello", hashKey);
+    expect(entry.hits).to.equal(3);
     expect(r2).includes(message);
     verifyRenderResults(r1, r2, r3);
 
@@ -271,25 +273,6 @@ describe("SSRCaching template caching", function () {
 
   it("should handle template and strip url protocol", function () {
     testTemplate(true, true, true);
-  });
-
-  it("should support debug caching", function () {
-    renderBoard(users);
-    SSRCaching.enableCaching();
-    SSRCaching.enableCachingDebug();
-    expect(SSRCaching.config.debug).to.equal(true);
-    SSRCaching.enableCachingDebug(false);
-    expect(SSRCaching.config.debug).to.equal(false);
-    SSRCaching.enableCachingDebug(true);
-    expect(SSRCaching.config.debug).to.equal(true);
-    SSRCaching.setCachingConfig(cacheConfig);
-    SSRCaching.shouldHashKeys(false);
-    const r2 = renderBoard(users);
-    expect(r2).includes("<!-- component Board cacheType NONE");
-    expect(r2).includes("<!-- component InfoCard cacheType cache");
-    const r3 = renderBoard(users);
-    expect(r3).includes("<!-- component Board cacheType NONE");
-    expect(r3).includes("<!-- component InfoCard cacheType HIT");
   });
 
   it("should throw error for unknown caching strategy", function () {
