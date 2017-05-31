@@ -3,6 +3,13 @@
 // test cache store feature
 
 const CacheStore = require("../../lib/cache-store");
+const Redis = require("ioredis");
+const redisHost = "115.29.5.46";
+const cacheImpl = new Redis(6379, redisHost, {
+  password: "qingting123"
+});
+cacheImpl.length = cacheImpl.dbsize;
+
 
 describe("CacheStore", function () {
   this.timeout(15000);
@@ -54,15 +61,6 @@ describe("CacheStore", function () {
   });
 
   it("should cache data with redis", function (done) {
-    const Redis = require("ioredis");
-    // const redisHost = process.env.NODE_ENV === "production" ? "10.122.73.215" : "115.29.5.46";
-    const redisHost = "115.29.5.46";
-    console.log("redis connected redisHost", redisHost);
-    const cacheImpl = new Redis(6379, redisHost, {
-      password: "qingting123"
-    });
-    cacheImpl.length = cacheImpl.dbsize;
-    // cacheImpl.set = cacheImpl.set.bind(cacheImpl);
     const cacheStore = new CacheStore({
       cacheImpl
     });
@@ -70,17 +68,38 @@ describe("CacheStore", function () {
     .then(function () {
       return cacheStore.newEntry("test", "1", {html: "hello1"});
     })
-    .then(function (reply) {
-      console.log("reply : ", reply);
+    .then(function () {
       return cacheStore.getEntry("test", "1")
       .then(function (res) {
         expect(res.html).to.equal("hello1");
-        console.log("test here");
         done();
       });
     })
     .catch(function (e) {
       console.log("error happened: ", e);
+      done();
+    });
+  });
+
+  it("should cache data with redis in production mode", function (done) {
+    const cacheStore = new CacheStore({
+      cacheImpl,
+      debug: false
+    });
+    Promise.resolve()
+    .then(function () {
+      return cacheStore.newEntry("test", "1", {html: "hello1"});
+    })
+    .then(function () {
+      return cacheStore.getEntry("test", "1")
+      .then(function (res) {
+        expect(res.html).to.equal("hello1");
+        done();
+      });
+    })
+    .catch(function (e) {
+      console.log("error happened: ", e);
+      done();
     });
   });
 });
