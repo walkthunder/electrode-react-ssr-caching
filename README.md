@@ -129,6 +129,15 @@ Parameters like `max`, `length()`, `maxAge`, and other paramters. are all the sa
   get a stale entry, as if it had already been deleted.
 
 
+If you want to use your own cache server, set the lru cache config with
+```js
+{
+    cacheImpl: redisClient // redisClient is instance of redis-cli to redis server
+}
+```
+Then all data would be cached with `redisClient`, and the lru stragety could be set on the redis server side.
+You may need some redis client libs here, like [ioredis](https://www.npmjs.com/package/ioredis).
+
 The basic steps to enabling caching are:
 
 ```js
